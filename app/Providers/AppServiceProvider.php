@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // 
     }
 
     /**
@@ -21,8 +24,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot() :void
     {
-        //
+        Gate::define('update-post', function (User $user, Post $post) {
+            return $user->id === $post->user_id;
+        });
     }
 }
